@@ -7,6 +7,8 @@ output: github_document
 
 # Set up
 
+Potential packages are first loaded to use for our problem sets. Figure preferences were used to set figure sizing and aesthetics for plotting outputs. 
+
 ```{r set up, message = FALSE}
 library(tidyverse)
 library(modelr)
@@ -32,6 +34,8 @@ scale_fill_discrete = scale_fill_viridis_d
 
 # Problem 1
 
+Problem set 1 outlines the function to be used to estimate the probability of sharing a birthday in a calendar year for a group size of 2:50. A figure was plotted to observe these estimates using `ggplot`. 
+
 ```{r bday function}
 bday_prob = function(n) {
   
@@ -47,8 +51,6 @@ bday_prob = function(n) {
   
 }
 ```
-
-
 
 ```{r bday simulation}
 set.seed(1)
@@ -66,7 +68,6 @@ bday_results =
 bday_results
 ```
 
-
 ```{r figure 1 }
 bday_results |> 
   ggplot(aes(x = n, y = bday_probability)) +
@@ -81,5 +82,7 @@ bday_results |>
 ```
 
 Figure 1 shows that the probability of sharing a birthday increases as the group size increases. For example, in a random group of 23 people, there is a 50% chance that at least two people share the same birthday. We see that the probability of shared birthdays among two people increases closer to 100% with at least 40 people in a random sample. This is because we're making comparisons based on matches, so the rate of possible shared birthdays increases at a faster rate than the group size
+
+# Problem 2
 
 
