@@ -53,7 +53,7 @@ bday_prob = function(n) {
 ```
 
 ```{r bday simulation}
-set.seed(1)
+set.seed(123)
 
 bday_results =
   tibble(
@@ -72,11 +72,11 @@ bday_results
 bday_results |> 
   ggplot(aes(x = n, y = bday_probability)) +
   geom_hline(yintercept = 0.5, linetype = "dashed") +
-  geom_point() +
+  geom_point(color = "blue") +
   scale_y_continuous(labels = percent_format()) +
   labs(
     title = "Figure 1. Probability of Shared Birthday by Group Size",
-    x = "Group size",
+    x = "Group size (n)",
     y = "Probability of shared birthday"
   )
 ```
@@ -85,4 +85,16 @@ Figure 1 shows that the probability of sharing a birthday increases as the group
 
 # Problem 2
 
+```{r mu & pval function}
+mu_pval_simul = function(mu, n = 30, sigma = 5) {
+  
+  x = rnorm(n, mean = mu, sd = sigma)
+  
+  t_test = t.test(x, mu = 0)
+  
+  broom::tidy(t_test) |> 
+    select(estimate, p.value)
+  
+}
+```
 
