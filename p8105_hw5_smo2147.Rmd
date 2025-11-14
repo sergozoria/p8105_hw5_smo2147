@@ -187,3 +187,9 @@ avg_est_summ |>
 
 Figure 3 shows the average estimates of µˆ across 5000 samples, along with the estimates of statistically significant samples with p-value of less than 0.05 in which the null hypothesis was rejected. From these results, we can infer that the average estimates of µˆ among the rejected tests is not equal to the true value of the true population mean, particularly when the true mean is small. This happens because when the true mean is close to 0, the test only rejects the null in samples where the observed value is larger than what it's expected. Based on the plotted estimates, we can conclude that as the true mean increases, more samples will exceed the rejection threshold, making the average estimate among rejected test become closer to the true population mean
 
+# Problem 3
+
+```{r}
+
+```
+
