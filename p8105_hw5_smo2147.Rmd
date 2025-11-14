@@ -68,7 +68,7 @@ bday_results =
 bday_results
 ```
 
-```{r figure 1 }
+```{r figure 1}
 bday_results |> 
   ggplot(aes(x = n, y = bday_probability)) +
   geom_hline(yintercept = 0.5, linetype = "dashed") +
@@ -80,6 +80,8 @@ bday_results |>
     y = "Probability of shared birthday"
   )
 ```
+
+## Figure 1 - Comment
 
 Figure 1 shows that the probability of sharing a birthday increases as the group size increases. For example, in a random group of 23 people, there is a 50% chance that at least two people share the same birthday. We see that the probability of shared birthdays among two people increases closer to 100% with at least 40 people in a random sample. This is because we're making comparisons based on matches, so the rate of possible shared birthdays increases at a faster rate than the group size
 
@@ -112,11 +114,10 @@ sim_mu0
 ```
 
 
-
 ```{r}
-sim_mu_16 =
+sim_mu_06 =
   expand_grid(
-    mu = 1:6,
+    mu = 0:6,
     iter = 1:5000
   ) |> 
   mutate(
@@ -124,11 +125,34 @@ sim_mu_16 =
   ) |> 
     unnest(tt_results)
 
-sim_mu_16
+sim_mu_06
 ```
 
+
+```{r figure 2}
+power_df =
+  sim_mu_06 |> 
+  group_by(mu) |> 
+  summarize(power = mean(p.value < 0.05))
+
+power_df |> 
+  ggplot(aes(x = mu, y = power)) +
+  geom_line(color = "skyblue") +
+  geom_point(color = "blue", size = 2) +
+  labs(
+    title = "Figure 2. Association between Effect Zize and Power",
+    x = "True population mean",
+    y = "Power (Prob. of Rejection Null)"
+  )
+```
+
+## Figure 2 - Comment
+
+Figure 2 shows that the proportion of rejecting the null, meaning power, increases as the true population mean moves further away from 0. Notably, when the true population mean increases from 2 to 3, the proportion of rejecting the null increases significantly, closer to a power of 1
 
 ```{r}
 
 ```
+
+
 
