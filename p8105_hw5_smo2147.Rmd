@@ -81,7 +81,7 @@ bday_results |>
   )
 ```
 
-## Figure 1 - Comment
+#### Figure 1 - Comments
 
 Figure 1 shows that the probability of sharing a birthday increases as the group size increases. For example, in a random group of 23 people, there is a 50% chance that at least two people share the same birthday. We see that the probability of shared birthdays among two people increases closer to 100% with at least 40 people in a random sample. This is because we're making comparisons based on matches, so the rate of possible shared birthdays increases at a faster rate than the group size
 
@@ -140,19 +140,47 @@ power_df |>
   geom_line(color = "skyblue") +
   geom_point(color = "blue", size = 2) +
   labs(
-    title = "Figure 2. Association between Effect Zize and Power",
+    title = "Figure 2. Association between Effect Size and Power",
     x = "True population mean",
-    y = "Power (Prob. of Rejection Null)"
+    y = "Power (Prob. of pejection null)"
   )
 ```
 
-## Figure 2 - Comment
+#### Figure 2 - Comments
 
 Figure 2 shows that the proportion of rejecting the null, meaning power, increases as the true population mean moves further away from 0. Notably, when the true population mean increases from 2 to 3, the proportion of rejecting the null increases significantly, closer to a power of 1
 
-```{r}
+```{r summary table for average estimates}
+avg_est_summ =
+  sim_mu_06 |> 
+  group_by(mu) |> 
+  summarize(
+    avg_est_all = mean(estimate),
+    avg_est_reject = mean(estimate[p.value < .05])
+  )
 
+avg_est_summ |> 
+  rename(
+    `True µ` = mu,
+    `Average µˆ (All)` = avg_est_all,
+    `Average µˆ (Rejected)` = avg_est_reject
+  ) |> 
+  knitr::kable(digits = 3)
 ```
 
 
+```{r figure 3}
+avg_est_summ |> 
+  ggplot(aes(x = mu)) +
+  geom_line(aes(y = avg_est_all), color = "blue") +
+  geom_point(aes(y = avg_est_all), color = "blue") +
+  geom_line(aes(y = avg_est_reject), color = "red") +
+  geom_point(aes(y = avg_est_reject), color = "red") +
+  labs(
+    title = "Figure 3. Average Sample Estimates vs True Population Estimates",
+    x = "True population (µ)",
+    y = "Average sample estimate (µˆ)"
+  )
+```
 
+#### Figure 3 - Comments
