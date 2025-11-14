@@ -86,7 +86,7 @@ Figure 1 shows that the probability of sharing a birthday increases as the group
 # Problem 2
 
 ```{r mu & pval function}
-mu_pval_simul = function(mu, n = 30, sigma = 5) {
+sim_test = function(mu, n = 30, sigma = 5) {
   
   x = rnorm(n, mean = mu, sd = sigma)
   
@@ -96,5 +96,18 @@ mu_pval_simul = function(mu, n = 30, sigma = 5) {
     select(estimate, p.value)
   
 }
+```
+
+
+```{r}
+sim_mu0 = 
+  tibble(
+    iter = 1:5000) |> 
+  mutate(
+    tt_results = map(iter, \(i) sim_test(mu = 0, n = 30, sigma = 5))
+  ) |> 
+  unnest(tt_results)
+
+sim_mu0
 ```
 
