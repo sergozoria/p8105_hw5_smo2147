@@ -56,11 +56,11 @@ set.seed(1)
 bday_results =
   tibble(
     n = 2:50,
-    bday_probability = 
-      map_dbl(n, \(x) mean(replicate(10000, bday_prob(x)
-                                     )
-                           )
-              )
+    bday_probability = map_dbl(
+      n, \(x) mean(replicate(10000, bday_prob(x)
+                             )
+                   )
+      )
   )
 
 bday_results
@@ -70,7 +70,7 @@ bday_results
 ```{r bday simulation plot}
 bday_results |> 
   ggplot(aes(x = n, y = bday_probability)) +
-  geom_line() +
+  geom_hline(yintercept = 0.5, linetype = "dashed") +
   geom_point() +
   scale_y_continuous(labels = percent_format()) +
   labs(
@@ -78,6 +78,5 @@ bday_results |>
     x = "Group size",
     y = "Probability of shared birthday"
   )
-
 ```
 
