@@ -104,10 +104,31 @@ sim_mu0 =
   tibble(
     iter = 1:5000) |> 
   mutate(
-    tt_results = map(iter, \(i) sim_test(mu = 0, n = 30, sigma = 5))
+    tt_results = map(iter, \(i) sim_test(mu = 0))
   ) |> 
   unnest(tt_results)
 
 sim_mu0
+```
+
+
+
+```{r}
+sim_mu_16 =
+  expand_grid(
+    mu = 1:6,
+    iter = 1:5000
+  ) |> 
+  mutate(
+    tt_results = map(mu, sim_test)
+  ) |> 
+    unnest(tt_results)
+
+sim_mu_16
+```
+
+
+```{r}
+
 ```
 
