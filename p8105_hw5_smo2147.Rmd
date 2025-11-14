@@ -11,6 +11,7 @@ output: github_document
 library(tidyverse)
 library(modelr)
 library(rvest)
+library(scales)
 
 knitr::opts_chunk$set(
   fig.width = 6,
@@ -27,5 +28,56 @@ options(
 
 scale_colour_discrete = scale_colour_viridis_d
 scale_fill_discrete = scale_fill_viridis_d
+```
+
+# Problem 1
+
+```{r bday function}
+bday_prob = function(n) {
+  
+  if (!is.numeric(n) || length(n) != 1 || n < 1) {
+    
+    stop("n must be a single positive number") 
+    
+    }
+
+  bday_samp = sample(1:365, size = n, replace = TRUE)
+  
+  any(duplicated(bday_samp))
+  
+}
+```
+
+
+
+```{r bday simulation}
+set.seed(1)
+
+bday_results =
+  tibble(
+    n = 2:50,
+    bday_probability = 
+      map_dbl(n, \(x) mean(replicate(10000, bday_prob(x)
+                                     )
+                           )
+              )
+  )
+
+bday_results
+```
+
+
+```{r bday simulation plot}
+bday_results |> 
+  ggplot(aes(x = n, y = bday_probability)) +
+  geom_line() +
+  geom_point() +
+  scale_y_continuous(labels = percent_format()) +
+  labs(
+    title = "Probability of Shared Birthday by Group Size",
+    x = "Group size",
+    y = "Probability of shared birthday"
+  )
+
 ```
 
