@@ -189,7 +189,7 @@ Figure 3 shows the average estimates of µˆ across 5000 samples, along with the
 
 # Problem 3
 
-```{r}
+```{r loading US homicide data}
 wash_homi_df =
   read.csv("./Data/homicide-data.csv", na = c("NA", ".", "")) |> 
   janitor::clean_names()
@@ -203,7 +203,7 @@ This Washington Post homicide dataset contains **`r nrow(wash_homi_df)`** observ
 
 Let's first create a new variable integrating cities with their corresponding state, followed by a summary of the total number of homicides and the number of unsolved homicides by status of investigation
 
-```{r}
+```{r homicide summary}
 wash_homi_df = 
   wash_homi_df |>
   mutate(
@@ -220,4 +220,30 @@ homi_summ =
 
 homi_summ
 ```
+
+
+```{r estimating proportion of homicides}
+filter_balt =
+  wash_homi_df |> 
+  filter(city_state == "Baltimore, MD")
+
+count_balt =
+  filter_balt |> 
+  summarize(
+    total = n(),
+    unsolved = sum(disposition %in% c("Closed without arrest", "Open/No arrest"))
+  )
+
+test_balt =
+  prop.test(
+    x = count_balt$unsolved,
+    n = count_balt$total
+  ) |> 
+  broom::tidy()
+
+test_balt |> select(estimate, conf.low, conf.high) |> 
+  knitr::kable(digits = 3)
+```
+
+Based on these estimates, we can conclude that about 64.6% of total homicides committed in the city of Baltimore are not solved. Therefore, we are 95% confident that the true proportion of unsolved homicides in the city of Baltimore, however, lies between 62.8% and 66.3%
 
