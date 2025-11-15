@@ -272,7 +272,7 @@ city_ptest
 ```
 
 
-```{r figure 4}
+```{r figure 4, fig.width=10, fig.height=8}
 city_ptest |> 
   mutate(
     city_state = fct_reorder(city_state, estimate)
