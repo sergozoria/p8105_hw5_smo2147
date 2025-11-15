@@ -197,4 +197,27 @@ wash_homi_df =
 
 #### Description of Washington Post Homicide Dataset
 
-This Washington Post homicide dataset contains **`r nrow(wash_homi_df)`** observations and **`r ncol(wash_homi_df)`** variables that provide national data on criminal homicides across 50 of the largest American cities over the past decade, including reported data of criminal act, victims' basic demographic data, as well as the city and state in which it occurred, and  the status of investigation
+This Washington Post homicide dataset contains **`r nrow(wash_homi_df)`** observations and **`r ncol(wash_homi_df)`** variables that provide national data on criminal homicides across 50 of the largest American cities over the past decade, including key variables such as data of criminal act, victims' basic demographic data such as sex, age, and race/ethnicity, the city and state in which the homicide occurred, and the status of homicide investigation (i.e., `disposition`)
+
+#### Total Number of Homicides & Unsolved Homicides by City and Status of Investigation
+
+Let's first create a new variable integrating cities with their corresponding state, followed by a summary of the total number of homicides and the number of unsolved homicides by status of investigation
+
+```{r}
+wash_homi_df = 
+  wash_homi_df |>
+  mutate(
+    city_state = str_c(city, state, sep = ", ")
+  ) 
+
+homi_summ =
+  wash_homi_df |> 
+  group_by(city_state) |> 
+  summarize(
+    t_homi = n(),
+    t_unsolved = sum(disposition %in% c("Closed without arrest", "Open/No arrest"))
+  )
+
+homi_summ
+```
+
