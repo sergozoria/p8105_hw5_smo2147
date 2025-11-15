@@ -247,3 +247,48 @@ test_balt |> select(estimate, conf.low, conf.high) |>
 
 Based on these estimates, we can conclude that about 64.6% of total homicides committed in the city of Baltimore are not solved. Therefore, we are 95% confident that the true proportion of unsolved homicides in the city of Baltimore, however, lies between 62.8% and 66.3%
 
+```{r running prop.test for each city}
+city_ptest =
+  wash_homi_df |> 
+  group_by(city_state) |> 
+  summarize(
+    total = n(),
+    unsolved = sum(disposition %in% c("Closed without arrest", "Open/No arrest")),
+    .groups = "drop"
+  ) |> 
+  mutate(
+    c_ptest = map2(unsolved, total, \(u, t) prop.test(u, t)),
+    tidy_c_ptest = map(c_ptest, broom::tidy)
+  ) |> 
+  unnest(tidy_c_ptest) |> 
+  select(
+    city_state,
+    estimate,
+    conf.low,
+    conf.high
+  )
+
+city_ptest
+```
+
+
+```{r figure 4}
+city_ptest |> 
+  mutate(
+    city_state = fct_reorder(city_state, estimate)
+  ) |> 
+  ggplot(aes(x = city_state, y = estimate)) +
+  geom_errorbar(
+    aes(ymin = conf.low, ymax = conf.high)
+  ) +
+  geom_point(color = "blue", size = 2) +
+  coord_flip() +
+  labs(
+    title = "Figure 4. Proportion of Unsolved Homicides by Cities in the United States",
+    x = "Cities",
+    y = "Estimates (95% CI)"
+  )
+  
+```
+
+Figure 4 shows the proportion of unsolved homicides sorted by cities from lowest to highest, showing their estimated proportions along with their 95 confidence interval range. From this figure, the city of Chicago has the highest proportion of unsolved homicides at around 73%, where the city of Tulsa either reports a proportion of 0% unsolved or there's no data on the proportion of crimes unsolved. Overall, the city of Richmond reports one of the lowest proportion of unsolved homicides among our sample population.
