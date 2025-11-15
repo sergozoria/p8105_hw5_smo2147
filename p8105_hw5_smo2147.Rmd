@@ -190,6 +190,8 @@ Figure 3 shows the average estimates of µˆ across 5000 samples, along with the
 # Problem 3
 
 ```{r}
-
+wash_homo_df =
+  read.csv("./Data/homicide-data.csv", na = c("NA", ".", "")) |> 
+  janitor::clean_names()
 ```
 
