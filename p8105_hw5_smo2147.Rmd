@@ -272,7 +272,7 @@ city_ptest
 ```
 
 
-```{r figure 4, fig.width=10, fig.height=8}
+```{r fig.width = 10, fig.height = 7}
 city_ptest |> 
   mutate(
     city_state = fct_reorder(city_state, estimate)
@@ -290,5 +290,7 @@ city_ptest |>
   )
   
 ```
+
+#### Figure 4 - Comments
 
 Figure 4 shows the proportion of unsolved homicides sorted by cities from lowest to highest, showing their estimated proportions along with their 95 confidence interval range. From this figure, the city of Chicago has the highest proportion of unsolved homicides at around 73%, where the city of Tulsa either reports a proportion of 0% unsolved or there's no data on the proportion of crimes unsolved. Overall, the city of Richmond reports one of the lowest proportion of unsolved homicides among our sample population.
